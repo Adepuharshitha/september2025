@@ -1,0 +1,19 @@
+class Solution:
+    def minimumTeachings(self, n: int, languages: List[List[int]], friendships: List[List[int]]) -> int:
+        langs=[set(l) for l in languages]
+        need_teach=set()
+        for u,v in friendships:
+            if langs[u-1].isdisjoint(langs[v-1]):
+                need_teach.add(u-1)
+                need_teach.add(v-1)
+        if not need_teach:
+            return 0
+        res=float('inf')
+        for lang in range(1,n+1):
+            count=0
+            for user in need_teach:
+                if lang not in langs[user]:
+                    count+=1
+            res=min(res,count)
+        return res
+        
