@@ -1,0 +1,27 @@
+class Solution:
+    def devowel(self, word):
+        vowels = 'aeiou'
+        return ''.join('*' if ch in vowels else ch for ch in word.lower())
+    def spellchecker(self, wordlist: List[str], queries: List[str]) -> List[str]:
+        words_exact = set(wordlist)
+        words_case = {}
+        words_vowel = {}
+        for word in wordlist:
+            lower = word.lower()
+            dev = self.devowel(word)
+            
+            if lower not in words_case:   
+                words_case[lower] = word
+            if dev not in words_vowel:    
+                words_vowel[dev] = word
+        answers = []
+        for query in queries:
+            if query in words_exact:
+                answers.append(query)
+            elif query.lower() in words_case:
+                answers.append(words_case[query.lower()])
+            elif self.devowel(query) in words_vowel:
+                answers.append(words_vowel[self.devowel(query)])
+            else:
+                answers.append("")
+        return answers
