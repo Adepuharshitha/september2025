@@ -1,0 +1,27 @@
+class Spreadsheet:
+    def __init__(self, rows: int):
+        self.rows = rows
+        self.cols = 26
+        self.grid = [[0] * self.cols for _ in range(rows)]
+    def _parse_cell(self, cell: str):
+        col = ord(cell[0]) - ord('A')
+        row = int(cell[1:]) - 1
+        return row, col
+    def setCell(self, cell: str, value: int) -> None:
+        r, c = self._parse_cell(cell)
+        self.grid[r][c] = value
+    def resetCell(self, cell: str) -> None:
+        r, c = self._parse_cell(cell)
+        self.grid[r][c] = 0
+    def _get_operand(self, token: str) -> int:
+        if token[0].isalpha():
+            r, c = self._parse_cell(token)
+            return self.grid[r][c]
+        else:
+            return int(token)
+    def getValue(self, formula: str) -> int:
+        if not formula.startswith('='):
+            return int(formula)
+        expr = formula[1:]
+        left, right = expr.split('+')
+        return self._get_operand(left) + self._get_operand(right)
